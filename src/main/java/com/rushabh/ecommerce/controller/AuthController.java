@@ -1,5 +1,6 @@
 package com.rushabh.ecommerce.controller;
 
+import com.rushabh.ecommerce.dto.request.LoginRequest;
 import com.rushabh.ecommerce.dto.request.RegisterRequest;
 import com.rushabh.ecommerce.dto.response.ApiResponse;
 import com.rushabh.ecommerce.dto.response.AuthResponse;
@@ -26,5 +27,12 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ApiResponse<>("success", "User Registered!", res));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest request){
+        authService.login(request);
+        return ResponseEntity
+                .status(HttpStatus.CREATED).body(new ApiResponse<>("Success","Login Successful",null));
     }
 }
