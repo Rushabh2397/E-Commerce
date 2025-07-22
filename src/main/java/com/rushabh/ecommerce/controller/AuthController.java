@@ -1,8 +1,10 @@
 package com.rushabh.ecommerce.controller;
 
+import com.rushabh.ecommerce.dto.request.LoginRequest;
 import com.rushabh.ecommerce.dto.request.RegisterRequest;
 import com.rushabh.ecommerce.dto.response.ApiResponse;
 import com.rushabh.ecommerce.dto.response.AuthResponse;
+import com.rushabh.ecommerce.dto.response.LoginResponse;
 import com.rushabh.ecommerce.service.interfaces.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +28,14 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ApiResponse<>("success", "User Registered!", res));
+    }
+
+
+    @PostMapping("/login")
+    public  ResponseEntity<ApiResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest req){
+       LoginResponse res= authService.login(req);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ApiResponse<>("success", "User LoggedIn!", res));
     }
 }

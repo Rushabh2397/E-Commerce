@@ -8,7 +8,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long  id;
+    private long id;
 
     private String email;
     private String password;
@@ -17,7 +17,11 @@ public class User {
     private String phone;
     private boolean isActive;
 
-    public User(String email, String password, String firstName, String lastName,String phone ,boolean isActive) {
+    public User() {
+
+    }
+
+    public User(String email, String password, String firstName, String lastName, String phone, boolean isActive) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
