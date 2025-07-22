@@ -5,7 +5,9 @@ import com.rushabh.ecommerce.dto.request.RegisterRequest;
 import com.rushabh.ecommerce.dto.response.AuthResponse;
 import com.rushabh.ecommerce.dto.response.LoginResponse;
 import com.rushabh.ecommerce.dto.response.UserResponse;
+import com.rushabh.ecommerce.entity.Role;
 import com.rushabh.ecommerce.entity.User;
+import com.rushabh.ecommerce.repository.RoleRepository;
 import com.rushabh.ecommerce.repository.UserRepository;
 import com.rushabh.ecommerce.security.JwtService;
 import com.rushabh.ecommerce.security.UserPrincipal;
@@ -32,8 +34,12 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     @Override
     public AuthResponse register(RegisterRequest request) {
+        Role role = roleRepository.findByName("USER").orElseThrow(() -> new RuntimeException("Role not found"));
         User user =
                 new User(
                         request.getEmail(),
@@ -43,6 +49,8 @@ public class AuthServiceImpl implements AuthService {
                         request.getPhone(),
                         true);
         user.setPassword(encoder.encode(request.getPassword()));
+        user.getRoles().add(role);
+
         User savedUser = userRepository.save(user);
 
         UserResponse userRes =
